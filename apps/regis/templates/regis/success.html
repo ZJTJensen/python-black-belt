@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <div class="header">
+                <p><a href="/logout">Logout</a></p>
+        </div>
+<h1>Welcome {{self.first_name}}</h1>
+<div id = "left collum">
+    <p>Quotable Quotes</p>
+
+    <div class = "overflow">
+        {% for quotes in notYour %}
+            <div class="box">
+                <p>{{quotes.Quoted}}: {{quotes.Message}}</p>
+                <p class="posted"><a href="/user/{{quotes.creater_id}}"> Posted by {{quotes.creater.first_name}}</a></p>
+                <form action="add/{{quotes.id}}">
+                    {% csrf_token %}
+                    <input type="submit" value="Add to My List">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+<div id = "favs">
+        <fieldset class = "overflow">
+            <legend>Your Favorites</legend>
+            {% for quotes in yourQuote %}
+            <p>{{quotes.Quoted}}: {{quotes.Message}}</p>
+            <p class="posted"> <a href="/user/{{quotes.creater_id}}"> Posted by {{quotes.creater.first_name}}</a></p>
+            <form action="remove/{{quotes.id}}">
+                {% csrf_token %}
+                <input type="submit" value="Remove From My List">
+            </form>
+            {% endfor %}
+
+        </fieldset>
+</div>
+
+<div id = "createquote">
+    
+    <p>Contribute a quote </p>
+    <form action="/submit" method="post">
+        {% csrf_token %}
+        <p>Quoted By: <input type="text" name="Quoted"></p>
+        <p>Message: <textarea name="Message" cols="20" rows="10"></textarea></p>
+        <input type="submit" val="submit">
+    </form>
+
+    {% if messages %}
+    <div id= "error">
+      {% for message in messages %}
+       <p> {{message}}</p>
+      {% endfor %}
+      </div>
+
+    {% endif %}
+
+</div>
+
+
+
+
+</body>
+</html>
